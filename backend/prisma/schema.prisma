@@ -20,16 +20,18 @@ enum Role {
 }
 
 model Admin {
-  id          Int      @id @default(autoincrement())
-  name        String
-  email       String   @unique
-  password    String
-  phoneNumber String?
-  collegeName String?
-  role        Role     @default(ADMIN)
-  college     College? @relation(fields: [collegeName], references: [name])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                     Int      @id @default(autoincrement())
+  name                   String
+  email                  String   @unique
+  password               String
+  phoneNumber            String?
+  collegeName            String?
+  role                   Role     @default(ADMIN)
+  resetPasswordToken     String?
+  resetPasswordExpiresAt DateTime @default(now())
+  college                College? @relation(fields: [collegeName], references: [name])
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 }
 
 model College {
@@ -47,43 +49,47 @@ model College {
 }
 
 model Student {
-  id           Int      @id @default(autoincrement())
-  name         String
-  email        String   @unique
-  password     String
-  phoneNumber  String?
-  studentId    String   @unique
-  year         Int?
-  department   String?
-  semester     Int?
-  course       String?
-  profilePic   String?
-  collegeId    Int
-  role         Role     @default(STUDENT)
-  college      College  @relation(fields: [collegeId], references: [id])
-  clubs        Club[]   @relation("ClubMembership")
-  createdClubs Club[]   @relation("ClubCreator")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+    id                     Int      @id @default(autoincrement())
+  name                   String
+  email                  String   @unique
+  password               String
+  phoneNumber            String?
+  studentId              String   @unique
+  year                   Int?
+  department             String?
+  semester               Int?
+  course                 String?
+  profilePic             String?
+  collegeId              Int
+  role                   Role     @default(STUDENT)
+  college                College  @relation(fields: [collegeId], references: [id])
+  resetPasswordToken     String?
+  resetPasswordExpiresAt DateTime @default(now())
+  clubs                  Club[]   @relation("ClubMembership")
+  createdClubs           Club[]   @relation("ClubCreator")
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 }
 
 model Teacher {
-  id             Int      @id @default(autoincrement())
-  name           String
-  email          String   @unique
-  password       String
-  facultyId      String   @unique
-  phoneNumber    String?
-  designation    String?
-  qualification  String?
-  specialization String?
-  profilePic     String?
-  department     String
-  role           Role     @default(TEACHER)
-  collegeId      Int
-  college        College  @relation(fields: [collegeId], references: [id])
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id                     Int      @id @default(autoincrement())
+  name                   String
+  email                  String   @unique
+  password               String
+  facultyId              String   @unique
+  phoneNumber            String?
+  designation            String?
+  qualification          String?
+  specialization         String?
+  profilePic             String?
+  department             String
+  role                   Role     @default(TEACHER)
+  resetPasswordToken     String?
+  resetPasswordExpiresAt DateTime @default(now())
+  collegeId              Int
+  college                College  @relation(fields: [collegeId], references: [id])
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 }
 
 model Club {

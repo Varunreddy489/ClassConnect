@@ -10,6 +10,7 @@ import {
   teacherLogout,
 } from "../controllers/auth.controller";
 import { createCollege } from "../controllers/college.controller";
+// import { forgotPassword } from "../services/mail.service";
 
 
 const router = Router();
@@ -25,6 +26,10 @@ router.post("/admin/student/register", createStudent);
 router.post("/admin/teacher/register", createTeacher);
 router.post("/teacher/login", teacherLogin);
 router.post("/teacher/logout", teacherLogout);
+
+// * Email Routes
+
+// router.post("/student/forgotPassword", forgotPassword)
 
 // * College Routes
 
