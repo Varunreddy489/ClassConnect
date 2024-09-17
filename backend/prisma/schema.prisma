@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+model Admin {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String   @unique
+  password    String
+  phoneNumber String?
+  collegeName String?
+  role        Role     @default(ADMIN)
+  college     College? @relation(fields: [collegeName], references: [name])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model College {
+  id           Int       @id @default(autoincrement())
+  name         String    @unique
+  students     Student[]
+  teachers     Teacher[]
+  clubs        Club[]
+  admins       Admin[]
+  address      String?
+  contactEmail String?
+  contactPhone String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Student {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  password     String
+  phoneNumber  String?
+  studentId    String   @unique
+  year         Int?
+  department   String?
+  semester     Int?
+  course       String?
+  profilePic   String?
+  collegeId    Int
+  role         Role     @default(STUDENT)
+  college      College  @relation(fields: [collegeId], references: [id])
+  clubs        Club[]   @relation("ClubMembership")
+  createdClubs Club[]   @relation("ClubCreator")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Teacher {
+  id             Int      @id @default(autoincrement())
+  name           String
+  email          String   @unique
+  password       String
+  facultyId      String   @unique
+  phoneNumber    String?
+  designation    String?
+  qualification  String?
+  specialization String?
+  profilePic     String?
+  department     String
+  role           Role     @default(TEACHER)
+  collegeId      Int
+  college        College  @relation(fields: [collegeId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Club {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  creatorId   Int
+  creator     Student   @relation("ClubCreator", fields: [creatorId], references: [id])
+  members     Student[] @relation("ClubMembership")
+  collegeId   Int
+  college     College   @relation(fields: [collegeId], references: [id])
+}
