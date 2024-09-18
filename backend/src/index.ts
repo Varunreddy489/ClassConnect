@@ -5,6 +5,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import { apiRoutes } from "./routes/api";
+import { errorHandler } from "./middleware/ErrorHandler";
 
 const app = express();
 dotenv.config();
@@ -16,6 +17,7 @@ const corsOptions = {
   credentials: true,
 };
 
+app.use(errorHandler);
 app.use(fileUpload());
 app.use(express.json());
 app.use(cookieParser());

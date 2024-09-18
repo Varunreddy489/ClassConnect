@@ -36,9 +36,12 @@ export const handleForgotPassword = async (
 
     return res.status(200).json({
       message: "Check your email for the reset link.",
+      payload
     });
   } catch (error) {
     console.error("Error in forgot password:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
