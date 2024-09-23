@@ -21,6 +21,8 @@ import {
   getAllMessages,
   joinClubRequest,
   getAllJoinRequests,
+  acceptJoinRequest,
+  getAllClubMembers,
 } from "../controllers";
 
 import { checkIsAuth } from "../middleware/CheckAuth";
@@ -28,7 +30,7 @@ import { verifyRole } from "../middleware/verifyRole";
 
 const router = Router();
 
-// * Auth Routes
+// ! Auth Routes
 
 router.post("/admin/createAdmin", createAdmin);
 
@@ -42,32 +44,43 @@ router.post("/teacher/logout", teacherLogout);
 router.post("/admin/teacher/register", createTeacher);
 router.post("/teacher/changePassword/:token", passwordChangeTeacher);
 
-// * Email Routes
+// ! Email Routes
 
 router.post("/teacher/forgotPassword", forgotPasswordTeacher);
 router.post("/student/forgotPassword", forgotPasswordStudent);
 
-// * Student Routes
+// ! Student Routes
 
 router.post("/student/updateProfile");
 
-// * Teacher Routes
+// ! Teacher Routes
 
 router.post("/teacher/updateProfile");
 
-// * College Routes
+// ! College Routes
 
 router.post("/admin/createCollege", createCollege);
 
-// * Club Routes
+// ! Club Routes
 
-router.put("/club/add/:clubId", addToClub);
+               // * Club Creation
+
 router.get("/club", checkIsAuth,getAllClubs);
 router.put("/club/update/:clubId", updateClub);
 router.post("/club/create/:studentId", createClub);
-router.post("/club/join/:clubId",checkIsAuth, joinClubRequest);
+
+              // * Club Joining
+
+router.put("/club/add/:clubId", addToClub);
 router.get("/club/:clubId",checkIsAuth, getAllJoinRequests);
+router.post("/club/join/:clubId",checkIsAuth, joinClubRequest);
+router.post("/club/accept/:clubId",checkIsAuth, acceptJoinRequest);
+router.get("/club/members/:clubId",checkIsAuth, getAllClubMembers);
+
+              // * Club Messages
+              
 router.post("/club/message/:clubId",checkIsAuth,verifyRole(['STUDENT', 'ADMIN']),sendMessages)
 router.get("/club/message/:clubId",checkIsAuth,verifyRole(['STUDENT', 'ADMIN']),getAllMessages)
+
 
 export { router as apiRoutes };

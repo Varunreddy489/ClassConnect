@@ -248,8 +248,7 @@ export const joinClubRequest = async (req: Request, res: Response) => {
 export const getAllJoinRequests = async (req: Request, res: Response) => {
   try {
     const { clubId } = req.params;
-
-    console.log("req.user:", req.user);
+    // console.log("req.user:", req.user);
 
     const club = await prisma.club.findUnique({
       where: { id: Number(clubId) },
@@ -285,3 +284,94 @@ export const getAllJoinRequests = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const acceptJoinRequest = async (req: Request, res: Response) => {
+  try {
+    const { clubId } = req.params;
+    const { requestId } = req.body;
+    const userId = req.user.id;
+
+    const club = await prisma.club.findUnique({
+      where: { id: Number(clubId) },
+      select: {
+        id: true,
+        creatorId: true,
+      },
+    });
+
+    if (!club) {
+      return res.status(404).json({ error: "Club not found" });
+    }
+
+    const joinRequest = await prisma.joinRequest.findUnique({
+      where: { id: Number(requestId) },
+      include: {
+        club: true,
+      },
+    });
+
+    if (!joinRequest) {
+      return res.status(404).json({ error: "Join request not found" });
+    }
+
+    // Check if the current user is the creator of the club
+    if (joinRequest.club.creatorId !== userId) {
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to accept this join request." });
+    }
+
+    if (joinRequest.status === "APPROVED") {
+      return res
+        .status(400)
+        .json({ message: "This join request has already been accepted." });
+    }
+    const updatedRequest = await prisma.joinRequest.update({
+      where: { id: joinRequest.id },
+      data: {
+        status: "APPROVED",
+      },
+    });
+
+    await prisma.club.update({
+      where: { id: joinRequest.clubId },
+      data: {
+        members: {
+          connect: { id: joinRequest.studentId },
+        },
+      },
+    });
+
+    return res.json({
+      message: "Join request accepted successfully",
+      updatedRequest,
+    });
+  } catch (error) {
+    console.error("Error in acceptJoinRequest:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getAllClubMembers = async (req: Request, res: Response) => {
+  try {
+    const { clubId } = req.params;
+
+    const club = await prisma.club.findUnique({
+      where: { id: Number(clubId) },
+      include: {
+        members: true, // Include the members relation
+      },
+    });
+
+    if (!club) {
+      return res.status(404).json({ error: "Club not found" });
+    }
+
+    return res.json(club.members); 
+  } catch (error) {
+    console.error("Error in getAllClubMembers:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// i created the crud operations, enabled send and retrival of messages  and enables club joining request and accept
