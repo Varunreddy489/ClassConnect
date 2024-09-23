@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import prisma from "../db/db.config";
 import { changePassword } from "../services/auth.service";
 import { handleForgotPassword } from "../services/mail.service";
+import { imageValidator } from "../utils/imageHelper";
 
 export const forgotPasswordStudent = async (req: Request, res: Response) => {
   try {
@@ -31,12 +32,19 @@ export const passwordChangeStudent = async (req: Request, res: Response) => {
   }
 };
 
+// export const updateProfile = async (req: Request, res: Response) => {
+//   try {
+//     const { userId } = req.params;
 
-export const updateProfile=async(req:Request,res:Response)=>{
-  try {
-    
-  } catch (error) {
-    console.log("error in addProfile:", error);
-    res.status(404).json({ error: "internal server error" });
-  }
-}
+//     const image = req?.files?.image;
+
+//     if(image){
+//       const message=imageValidator(image?.size,image?.mimetype)
+//     }
+
+
+//   } catch (error) {
+//     console.log("error in addProfile:", error);
+//     res.status(404).json({ error: "internal server error" });
+//   }
+// };

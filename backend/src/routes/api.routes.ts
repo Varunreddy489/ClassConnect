@@ -1,27 +1,30 @@
 import { Router } from "express";
 
 import {
+  addToClub,
+  createClub,
+  updateClub,
+  getAllClubs,
   createAdmin,
   studentLogin,
+  sendMessages,
   teacherLogin,
   createStudent,
+  teacherLogout,
   createTeacher,
   studentLogout,
-  teacherLogout,
-} from "../controllers/auth.controller";
-
-import {
-  updateProfile,
+  createCollege,
   forgotPasswordStudent,
   passwordChangeStudent,
-} from "../controllers/student.controller";
-
-import {
   forgotPasswordTeacher,
   passwordChangeTeacher,
-} from "../controllers/teacher.controller";
+  getAllMessages,
+  joinClubRequest,
+  getAllJoinRequests,
+} from "../controllers";
 
-import { createCollege } from "../controllers/college.controller";
+import { checkIsAuth } from "../middleware/CheckAuth";
+import { verifyRole } from "../middleware/verifyRole";
 
 const router = Router();
 
@@ -46,12 +49,25 @@ router.post("/student/forgotPassword", forgotPasswordStudent);
 
 // * Student Routes
 
-router.post("/student/updateProfile", updateProfile);
+router.post("/student/updateProfile");
 
 // * Teacher Routes
+
+router.post("/teacher/updateProfile");
 
 // * College Routes
 
 router.post("/admin/createCollege", createCollege);
+
+// * Club Routes
+
+router.put("/club/add/:clubId", addToClub);
+router.get("/club", checkIsAuth,getAllClubs);
+router.put("/club/update/:clubId", updateClub);
+router.post("/club/create/:studentId", createClub);
+router.post("/club/join/:clubId",checkIsAuth, joinClubRequest);
+router.get("/club/:clubId",checkIsAuth, getAllJoinRequests);
+router.post("/club/message/:clubId",checkIsAuth,verifyRole(['STUDENT', 'ADMIN']),sendMessages)
+router.get("/club/message/:clubId",checkIsAuth,verifyRole(['STUDENT', 'ADMIN']),getAllMessages)
 
 export { router as apiRoutes };

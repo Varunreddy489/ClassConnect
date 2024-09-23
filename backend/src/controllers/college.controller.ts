@@ -5,7 +5,6 @@ export const createCollege = async (req: Request, res: Response) => {
   try {
     const { name, address, contactEmail, contactNumber } = req.body;
 
-    // Basic validation
     if (!name || !contactEmail) {
       return res
         .status(400)

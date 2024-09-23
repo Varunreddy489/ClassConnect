@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import express from "express";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
-import { apiRoutes } from "./routes/api";
+import { apiRoutes } from "./routes/api.routes";
 import { errorHandler } from "./middleware/ErrorHandler";
 
 const app = express();
