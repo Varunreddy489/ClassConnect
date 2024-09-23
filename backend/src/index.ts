@@ -25,10 +25,9 @@ app.use(cors(corsOptions));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/api',apiRoutes)
+app.use("/api", apiRoutes);
+
 
 app.listen(PORT, () => {
   console.log(`Jai Shree Ram-${PORT}`);
 });
-
-
