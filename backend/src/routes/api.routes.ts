@@ -69,8 +69,8 @@ router.post("/admin/createCollege", createCollege);
                // * Club Creation
 
 router.get("/club", checkIsAuth,getAllClubs);
-router.put("/club/update/:clubId", updateClub);
 router.post("/club/create/:studentId", createClub);
+router.put("/club/update/:clubId",checkIsAuth, updateClub);
 
               // * Club Joining
 

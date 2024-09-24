@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import prisma from "../db/db.config";
+import { imageService } from "../services";
 
 enum Role {
   ADMIN = "ADMIN",
@@ -52,6 +53,40 @@ export const createClub = async (req: Request, res: Response) => {
 
 export const updateClub = async (req: Request, res: Response) => {
   try {
+    const { clubId } = req.params;
+
+    const userId = req.user.id;
+
+    const club = await prisma.club.findUnique({
+      where: { id: Number(clubId) },
+    });
+
+    if (!club) {
+      return res.status(404).json({ error: "Club not found" });
+    }
+
+    if (club.creatorId !== Number(userId)) {
+      return res.status(403).json({
+        error: "Unautho`rized: Only the club creator can add members",
+      });
+    }
+
+    const profile = req.files?.profile;
+
+    if (!profile) {
+      return res.status(400).json({ error: "No profile picture uploaded." });
+    }
+
+    const result = await imageService(
+      clubId.toString(),
+      prisma.club,
+      profile
+    );
+
+    res.status(200).json({
+      message: "Profile picture updated successfully",
+      result,
+    });
   } catch (error) {
     console.error("Error in updateClub:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -367,7 +402,7 @@ export const getAllClubMembers = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Club not found" });
     }
 
-    return res.json(club.members); 
+    return res.json(club.members);
   } catch (error) {
     console.error("Error in getAllClubMembers:", error);
     res.status(500).json({ error: "Internal server error" });
