@@ -55,9 +55,9 @@ model Student {
   password               String
   phoneNumber            String?
   studentId              String        @unique
-  year                   Int?
+  year                   String?
   department             String?
-  semester               Int?
+  semester               String?
   course                 String?
   profilePic             String?
   collegeId              Int

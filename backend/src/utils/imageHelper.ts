@@ -1,12 +1,13 @@
-import { v4 as uuidv4 } from "uuid";
 import fs from 'node:fs'
-import { supportedMimes } from "../config/imageType";
 import path from "node:path";
+import { v4 as uuidv4 } from "uuid";
+
+import { supportedTypes } from '../config/imageType';
 
 export const imageValidator = (size: number, mime: string) => {
   if (bytesToMb(size) > 5) {
     return "Image size too large";
-  } else if (!Object.keys(supportedMimes).includes(mime)) {
+  } else if (!Object.keys(supportedTypes).includes(mime)) {
     return "Invalid image type";
   }
   return null;
@@ -33,7 +34,7 @@ export const removeImage = (imageName:string) => {
 
 export const uploadImage = (image: any): string | null => {
   try {
-    // Safely get the file extension
+    //  get the file extension
     const ext = path.extname(image.name);
     const imageName = generateRandomNumber() + ext;
     const uploadPath = path.join(process.cwd(), "public", "images", imageName);

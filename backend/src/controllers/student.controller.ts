@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
 
 import prisma from "../db/db.config";
-import { changePassword } from "../services/auth.service";
-import { handleForgotPassword } from "../services/mail.service";
-import { imageValidator } from "../utils/imageHelper";
+import {
+  imageService,
+  changePassword,
+  handleForgotPassword,
+  profileService
+} from "../services";
 
 export const forgotPasswordStudent = async (req: Request, res: Response) => {
   try {
@@ -32,19 +35,49 @@ export const passwordChangeStudent = async (req: Request, res: Response) => {
   }
 };
 
-// export const updateProfile = async (req: Request, res: Response) => {
-//   try {
-//     const { userId } = req.params;
+export const updateProfilePic = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
 
-//     const image = req?.files?.image;
+    if (!req.files || !req.files.profile) {
+      return res.status(400).json({ error: "No profile picture uploaded." });
+    }
 
-//     if(image){
-//       const message=imageValidator(image?.size,image?.mimetype)
-//     }
+    const profile = req.files.profile;
+
+    const result = await imageService(userId, prisma.student, profile);
+
+    if (result.error) {
+      return res.status(400).json({ errors: result.error });
+    }
+
+    return res.status(201).json({
+      message: "Profile picture updated successfully",
+      data: result.data,
+    });
+  } catch (error) {
+    console.log("error in updateProfilePic:", error);
+    res.status(404).json({ error: "internal server error" });
+  }
+};
+
+export const updateProfile = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const body = req.body;
+
+    const result = await profileService(userId, prisma.student, body);
 
 
-//   } catch (error) {
-//     console.log("error in addProfile:", error);
-//     res.status(404).json({ error: "internal server error" });
-//   }
-// };
+    return res.status(201).json({
+      message: "Profile updated successfully",
+      data: result,
+    })
+  } catch (error) {
+    console.log("error in updateProfile:", error);
+    res.status(404).json({ error: "internal server error" });
+  }
+};
+
+

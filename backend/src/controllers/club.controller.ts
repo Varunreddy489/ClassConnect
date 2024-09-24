@@ -373,5 +373,3 @@ export const getAllClubMembers = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-// i created the crud operations, enabled send and retrival of messages  and enables club joining request and accept

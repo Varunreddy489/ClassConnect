@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Student" ALTER COLUMN "year" SET DATA TYPE TEXT,
+ALTER COLUMN "semester" SET DATA TYPE TEXT;

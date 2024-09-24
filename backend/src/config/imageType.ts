@@ -1,4 +1,4 @@
-export const supportedMimes = {
+export const supportedTypes = {
     "image/png": "png",
     "image/jpg": "jpg",
     "image/jpeg": "jpeg",

@@ -14,15 +14,17 @@ import {
   createTeacher,
   studentLogout,
   createCollege,
+  getAllMessages,
+  joinClubRequest,
+  updateProfilePic,
+  acceptJoinRequest,
+  getAllClubMembers,
+  getAllJoinRequests,
+  passwordChangeTeacher,
   forgotPasswordStudent,
   passwordChangeStudent,
   forgotPasswordTeacher,
-  passwordChangeTeacher,
-  getAllMessages,
-  joinClubRequest,
-  getAllJoinRequests,
-  acceptJoinRequest,
-  getAllClubMembers,
+  updateProfile,
 } from "../controllers";
 
 import { checkIsAuth } from "../middleware/CheckAuth";
@@ -51,7 +53,8 @@ router.post("/student/forgotPassword", forgotPasswordStudent);
 
 // ! Student Routes
 
-router.post("/student/updateProfile");
+router.put("/student/pic/:userId",updateProfilePic);
+router.put("/student/profile/:userId",updateProfile);
 
 // ! Teacher Routes
 
