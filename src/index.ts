@@ -1,7 +1,7 @@
 import cors from "cors";
 import path from "path";
 import dotenv from "dotenv";
-import express from "express";
+import express, { Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import { apiRoutes } from "./routes/api.routes";
@@ -27,7 +27,10 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api", apiRoutes);
 
+app.get('/', async (req: Request, res: Response) => {
+  res.send({ message: "health Ok!" })
+})
 
 app.listen(PORT, () => {
-  console.log(`Jai Shree Ram-${PORT}`);
+  console.log(`Server-${PORT}`);
 });

@@ -77,11 +77,7 @@ export const updateClub = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "No profile picture uploaded." });
     }
 
-    const result = await imageService(
-      clubId.toString(),
-      prisma.club,
-      profile
-    );
+    const result = await imageService(clubId.toString(), prisma.club, profile);
 
     res.status(200).json({
       message: "Profile picture updated successfully",
@@ -143,6 +139,31 @@ export const getAllClubs = async (req: Request, res: Response) => {
     return res.status(200).json(clubs);
   } catch (error) {
     console.error("error in getAllClubs:", error);
+    res.status(404).json({ error: "internal server error" });
+  }
+};
+
+export const getClubById = async (req: Request, res: Response) => {
+  try {
+    const { clubId } = req.params;
+
+    const club = await prisma.club.findUnique({
+      where: {
+        id: Number(clubId),
+      },
+      include: {
+        members: true, // Include the members relation
+        messages: true, // Include the conversation relation
+      },
+    });
+
+    if (!club) {
+      return res.status(404).json({ error: "Club not found" });
+    }
+
+    res.status(200).json(club);
+  } catch (error) {
+    console.error("error in getClubById:", error);
     res.status(404).json({ error: "internal server error" });
   }
 };
@@ -387,24 +408,3 @@ export const acceptJoinRequest = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllClubMembers = async (req: Request, res: Response) => {
-  try {
-    const { clubId } = req.params;
-
-    const club = await prisma.club.findUnique({
-      where: { id: Number(clubId) },
-      include: {
-        members: true, // Include the members relation
-      },
-    });
-
-    if (!club) {
-      return res.status(404).json({ error: "Club not found" });
-    }
-
-    return res.json(club.members);
-  } catch (error) {
-    console.error("Error in getAllClubMembers:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};

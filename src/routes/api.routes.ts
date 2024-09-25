@@ -18,13 +18,13 @@ import {
   joinClubRequest,
   updateProfilePic,
   acceptJoinRequest,
-  getAllClubMembers,
   getAllJoinRequests,
   passwordChangeTeacher,
   forgotPasswordStudent,
   passwordChangeStudent,
   forgotPasswordTeacher,
   updateProfile,
+  getClubById,
 } from "../controllers";
 
 import { checkIsAuth } from "../middleware/CheckAuth";
@@ -72,13 +72,13 @@ router.get("/club", checkIsAuth,getAllClubs);
 router.post("/club/create/:studentId", createClub);
 router.put("/club/update/:clubId",checkIsAuth, updateClub);
 
-              // * Club Joining
+              // * Club Ops
 
 router.put("/club/add/:clubId", addToClub);
+router.get("/club/details/:clubId",checkIsAuth, getClubById);
 router.get("/club/:clubId",checkIsAuth, getAllJoinRequests);
 router.post("/club/join/:clubId",checkIsAuth, joinClubRequest);
 router.post("/club/accept/:clubId",checkIsAuth, acceptJoinRequest);
-router.get("/club/members/:clubId",checkIsAuth, getAllClubMembers);
 
               // * Club Messages
               

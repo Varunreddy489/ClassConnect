@@ -16,7 +16,7 @@ export const genTokenAndCookie = (
       httpOnly: true, // Makes the cookie accessible only by the web server
       secure: process.env.NODE_ENV === "production", // Send only on HTTPS in production
       sameSite: "strict", // Helps prevent CSRF attacks
-      maxAge: 24 * 60 * 60 * 1000, // 1 day expiration
+      maxAge: 10 * 24 * 60 * 60 * 1000, // 1 day expiration
     });
   } catch (error) {
     console.error("errror in genTokenCookie:", error);
