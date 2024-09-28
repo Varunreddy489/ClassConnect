@@ -25,6 +25,7 @@ import {
   forgotPasswordTeacher,
   updateProfile,
   getClubById,
+  deleteClub,
 } from "../controllers";
 
 import { checkIsAuth } from "../middleware/CheckAuth";
@@ -70,12 +71,13 @@ router.post("/admin/createCollege", createCollege);
 
 router.get("/club", checkIsAuth,getAllClubs);
 router.post("/club/create/:studentId", createClub);
+router.delete("/club/:clubId",checkIsAuth, deleteClub);
 router.put("/club/update/:clubId",checkIsAuth, updateClub);
+router.get("/club/details/:clubId",checkIsAuth, getClubById);
 
               // * Club Ops
 
 router.put("/club/add/:clubId", addToClub);
-router.get("/club/details/:clubId",checkIsAuth, getClubById);
 router.get("/club/:clubId",checkIsAuth, getAllJoinRequests);
 router.post("/club/join/:clubId",checkIsAuth, joinClubRequest);
 router.post("/club/accept/:clubId",checkIsAuth, acceptJoinRequest);
