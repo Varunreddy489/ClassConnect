@@ -1,14 +1,15 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { extractTime } from "@/lib/extractTime";
-import { Messagetypes } from "@/types/Client-types";
+import { MessageTypes } from "@/types/Client-types";
 
 const Message = ({
   message,
   currentUserId,
 }: {
-  message: Messagetypes;
+  message: MessageTypes;
   currentUserId: string;
 }) => {
+  console.log(message.sender);
   const fromMe = message.sender.id == currentUserId;
 
   const img = message.sender.profilePic
@@ -27,7 +28,7 @@ const Message = ({
         {!fromMe && (
           <div className="w-8 h-8 md:w-10 md:h-10 rounded-full flex-shrink-0">
             <Avatar>
-              <AvatarImage  src={img} alt={message.sender.name}/>
+              <AvatarImage src={img} alt={message.sender.name} />
               <AvatarFallback>{message.sender.name}</AvatarFallback>
             </Avatar>
             {/* <img
@@ -59,7 +60,6 @@ const Message = ({
               <AvatarImage src={img} alt="@shadcn" />
               <AvatarFallback>{message.sender.name}</AvatarFallback>
             </Avatar>
-            
           </div>
         )}
       </div>

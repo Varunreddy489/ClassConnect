@@ -1,7 +1,6 @@
 import {
   Bell,
   Menu,
-  Star,
   House,
   // Inbox,
   // Files,
@@ -10,6 +9,7 @@ import {
   GraduationCap,
   MessagesSquare,
   BadgeIndianRupee,
+  CalendarCheck,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Separator } from "@radix-ui/react-dropdown-menu";
@@ -17,6 +17,8 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 import Logout from "./Logout";
 import logo from "/logo-no-background.svg";
 import { ModeToggle } from "./ui/mode-toggle";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { Button } from "./ui/button";
 
 const Sidebar = ({
   isCollapsed,
@@ -33,9 +35,14 @@ const Sidebar = ({
     >
       <div className="flex items-center  justify-between p-4">
         <div className="flex space-x-3">
-          <button onClick={toggleSidebar}>
-            <Menu className="size-10 p-1 hover:bg-gray-900 rounded-full" />
-          </button>
+          <Button
+            onClick={toggleSidebar}
+            className="rounded-full"
+            variant="ghost"
+            size="icon"
+          >
+            <Menu className="size-10  p-1 hover:dark:bg-gray-900 hover:bg-slate-600  " />
+          </Button>
           <a
             href="/"
             className={`flex items-center space-x-3 ${
@@ -52,7 +59,7 @@ const Sidebar = ({
           <li>
             <Link
               to="/home"
-              className="relative flex items-center h-11 hover:bg-gray-900 pr-6 group"
+              className="relative flex items-center h-11 hover:dark:bg-gray-900 hover:bg-slate-600  pr-6 group"
             >
               <div>
                 <House className="ml-4 size-6" />
@@ -70,7 +77,7 @@ const Sidebar = ({
           <li>
             <Link
               to="/clubs"
-              className="relative flex items-center h-11 hover:bg-gray-900 pr-6 group"
+              className="relative flex items-center h-11 hover:dark:bg-gray-900 hover:bg-slate-600  pr-6 group"
             >
               <div>
                 <MessagesSquare className="ml-4" />
@@ -88,7 +95,7 @@ const Sidebar = ({
           <li>
             <Link
               to="/member/clubs"
-              className="relative flex items-center h-11 hover:bg-gray-900 pr-6 group"
+              className="relative flex items-center h-11 hover:dark:bg-gray-900 hover:bg-slate-600  pr-6 group"
             >
               <div>
                 <GraduationCap className="ml-4" />
@@ -104,9 +111,9 @@ const Sidebar = ({
           </li>
 
           <li>
-            <a
-              href="#"
-              className="relative flex items-center h-11 hover:bg-gray-900 pr-6 group"
+            <Link
+              to="/notifications"
+              className="relative flex items-center h-11 hover:dark:bg-gray-900 hover:bg-slate-600  pr-6 group"
             >
               <div>
                 <Bell className="ml-4" />
@@ -125,15 +132,15 @@ const Sidebar = ({
               >
                 1.2k
               </span>
-            </a>
+            </Link>
           </li>
 
           <Separator className="my-2" />
 
           <li>
-            <a
-              href="#"
-              className="relative flex items-center h-11 hover:bg-gray-900 pr-6 group"
+            <Link
+              to="/jobs"
+              className="relative flex items-center h-11 hover:dark:bg-gray-900 hover:bg-slate-600  pr-6 group"
             >
               <div>
                 <BadgeIndianRupee className="ml-4" />
@@ -144,6 +151,31 @@ const Sidebar = ({
                 }`}
               >
                 Jobs
+              </span>
+              <span
+                className={`px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-500 bg-green-50 rounded-full ${
+                  isCollapsed ? "hidden" : "block"
+                }`}
+              >
+                15
+              </span>
+            </Link>
+          </li>
+
+          <li>
+            <a
+              href="#"
+              className="relative flex items-center h-11 hover:dark:bg-gray-900 hover:bg-slate-600  pr-6 group"
+            >
+              <div>
+                <CalendarCheck className="ml-4" />
+              </div>
+              <span
+                className={`ml-2 text-sm tracking-wide truncate transition-opacity duration-300 ${
+                  isCollapsed ? "hidden" : "block"
+                }`}
+              >
+                Events
               </span>
               <span
                 className={`px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-500 bg-green-50 rounded-full ${
@@ -172,7 +204,7 @@ const Sidebar = ({
           <li>
             <Link
               to="/profile"
-              className="relative flex items-center h-11 hover:bg-gray-900 pr-6 group"
+              className="relative flex items-center h-11 hover:dark:bg-gray-900 hover:bg-slate-600  pr-6 group"
             >
               <div>
                 <UserRoundPen className="ml-4" />
@@ -187,7 +219,7 @@ const Sidebar = ({
             </Link>
           </li>
 
-          <li className="flex hover:bg-gray-900 items-center">
+          <li className="flex hover:dark:bg-gray-900 hover:bg-slate-600  items-center">
             <div>
               <Logout />
             </div>
@@ -203,7 +235,7 @@ const Sidebar = ({
           <li>
             <a
               href="#"
-              className="relative flex items-center h-11 hover:bg-gray-900 pr-6 group"
+              className="relative flex items-center h-11 hover:dark:bg-gray-900 hover:bg-slate-600  pr-6 group"
             >
               <div>
                 <ModeToggle />
@@ -221,14 +253,15 @@ const Sidebar = ({
         <div className="flex mb-4 justify-end">
           <a
             href="https://github.com/Varunreddy489/ClassConnect"
-            className={`relative flex space-x-3 items-center h-11 hover:bg-gray-900 pr-6 group ${
+            className={`relative flex space-x-3 items-center h-11 hover:dark:bg-gray-900 hover:bg-slate-600  pr-6 group ${
               isCollapsed ? "w-16" : "w-64"
             }`}
             target="_blank"
             rel="noopener noreferrer"
           >
             <div>
-              <Star className="ml-4" />
+              {/* <Star className="ml-4" /> */}
+              <GitHubLogoIcon className="ml-4 size-6 " />
             </div>
             <span
               className={`ml-2 text-sm tracking-wide truncate transition-opacity duration-300 ${

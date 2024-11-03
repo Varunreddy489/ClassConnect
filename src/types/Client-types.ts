@@ -83,10 +83,10 @@ export type UserClubsResponse = {
 };
 
 export type MessageTypes = {
-	id: string;
-	body: string;
-	senderId: string;
-	createdAt: string;
-	shouldShake?: boolean;
+  id: string;
+  body: string;
+  sender: AuthUserType[];
+  senderId: string;
+  createdAt: string;
+  shouldShake?: boolean;
 };
-

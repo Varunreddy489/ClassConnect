@@ -11,6 +11,8 @@ import { Toaster } from "./components/ui/toaster";
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
 import Profile from "./pages/Profile";
+import Notifications from "./pages/Notifications";
+import Jobs from "./pages/Jobs";
 
 const App = () => {
   return (
@@ -30,6 +32,24 @@ const App = () => {
           element={
             <Layout showSidebar={true}>
               <Clubs />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/notifications"
+          element={
+            <Layout showSidebar={true}>
+              <Notifications />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/jobs"
+          element={
+            <Layout showSidebar={true}>
+              <Jobs />
             </Layout>
           }
         />
