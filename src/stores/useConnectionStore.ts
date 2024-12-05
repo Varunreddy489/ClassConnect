@@ -7,6 +7,7 @@ interface Connection {
   isLoading: boolean;
   error: string | null;
   users: Student[];
+
   suggestions: Student[];
 
   searchUsers: (name: string) => Promise<void>;
