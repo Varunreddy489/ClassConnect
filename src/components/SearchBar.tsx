@@ -15,7 +15,7 @@ const SearchBar = () => {
   };
 
   return (
-    <form className="max-w-lg w-72 mb-4 mx-auto">
+    <form className="max-w-lg w-full mb-4 mx-auto">
       <div className="flex">
         <button
           id="dropdown-button"

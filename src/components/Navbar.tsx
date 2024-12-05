@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="dark:bg-[#000000] bg-slate-500 top-0 left-0 w-full  relative py-1 px-3">
+    <nav className="dark:bg-[#000000] bg-orange-500 top-0 left-0 w-full  relative py-1 px-3">
       <div className="max-w-screen-xl flex items-center justify-between mx-auto p-3">
         <div className=" flex-shrink-0 ">
           <a href="/" className="flex items-center space-x-3">
