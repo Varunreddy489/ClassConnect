@@ -17,6 +17,7 @@ export interface ClubTypes {
   name: string;
   description: string;
   profilePic: string;
+  friends?: Student[];
 }
 
 export type CardFeatures = {
@@ -67,6 +68,9 @@ export type Student = {
   department?: string;
   phoneNumber?: number;
   profilePic?: string | null;
+  students?: AuthUserType;
+  clubs: ClubTypes[];
+  connections: any;
 };
 
 export type StudentsResponse = {
@@ -74,19 +78,38 @@ export type StudentsResponse = {
 };
 
 export type UserClubsResponse = {
-  id: string;
+  id?: string;
   name?: string;
   description?: string;
   profilePic?: string;
   members?: ClubMembers[];
   creator?: ClubMembers;
+  friends?: Student[];
 };
 
 export type MessageTypes = {
   id: string;
-  body: string;
-  sender: AuthUserType[];
-  senderId: string;
+  body?: string;
+  chatId: string;
+  conversationId?: string;
+  fileType?: string;
+  fileUrl?: string;
+  teacherId?: string;
+  sender: Student;
+  senderId?: string;
   createdAt: string;
   shouldShake?: boolean;
 };
+
+export interface Notification {
+  id: string;
+  clubId?: string;
+  content: string;
+  senderId: number;
+  recipientId: number;
+  type: string;
+  isRead: boolean;
+  joinRequestId: string;
+  student: Student;
+  createdAt: string;
+}
