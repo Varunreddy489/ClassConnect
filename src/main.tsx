@@ -7,7 +7,7 @@ import "./index.css";
 import App from "./App.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { ThemeProvider } from "./components/ui/theme-provider.tsx";
-import { SocketContextProvider } from "./context/SocketContext.tsx";
+// import { SocketContextProvider } from "./context/SocketContext.tsx";
 
 const queryClient = new QueryClient();
 
@@ -15,13 +15,13 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <SocketContextProvider>
+        {/* <SocketContextProvider> */}
           <QueryClientProvider client={queryClient}>
             <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
               <App />
             </ThemeProvider>
           </QueryClientProvider>
-        </SocketContextProvider>
+        {/* </SocketContextProvider> */}
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>

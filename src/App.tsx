@@ -1,18 +1,21 @@
 import { Route, Routes } from "react-router-dom";
 
+import Jobs from "./pages/Jobs";
 import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
 import Clubs from "./pages/Clubs";
-import Layout from "./components/Layout";
+import Events from "./pages/Events";
+import SignUp from "./pages/SignUp";
+import Layout from "./layout/Layout";
+import Profile from "./pages/Profile";
+import Network from "./pages/Network";
 import Dashboard from "./pages/Dashboard";
 import UserClubs from "./pages/UserClubs";
 import LandingPage from "./pages/LandingPage";
 import { Toaster } from "./components/ui/toaster";
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
-import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
-import Jobs from "./pages/Jobs";
+import Student from "./pages/Student";
 
 const App = () => {
   return (
@@ -32,6 +35,15 @@ const App = () => {
           element={
             <Layout showSidebar={true}>
               <Clubs />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/network"
+          element={
+            <Layout showSidebar={true}>
+              <Network />
             </Layout>
           }
         />
@@ -70,6 +82,23 @@ const App = () => {
               <UserClubs />
             </Layout>
           }
+        />
+        <Route
+          path="/events"
+          element={
+            <Layout showSidebar={true}>
+              <Events />
+            </Layout>
+          }
+        />
+
+        <Route
+          element={
+            <Layout showSidebar={true}>
+              <Student />
+            </Layout>
+          }
+          path="/profile/:studentId"
         />
 
         <Route element={<Login />} path="/login" />

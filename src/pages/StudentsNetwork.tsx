@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 import { Input } from "@/components/ui/input";
+import { Student } from "@/types/Client-types";
 import { Button } from "@/components/ui/button";
 import RequestCard from "@/components/RequestCard";
 import SuggestedFriends from "@/components/SuggestedFriends";
 import { useConnectionStore } from "@/stores/useConnectionStore";
-import { Student } from "@/types/Client-types";
 
 const StudentsNetwork = () => {
   const [search, setSearch] = useState("");
@@ -34,8 +34,6 @@ const StudentsNetwork = () => {
     getSuggestedConnections();
   }, []);
 
-  console.log(suggestions);
-
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <div className="flex w-full max-w-sm items-center space-x-2">
@@ -53,19 +51,25 @@ const StudentsNetwork = () => {
           {isLoading ? "Searching..." : "Search"}
         </Button>
       </div>
+      <div>
+        {users.length > 0 ? (
+          <div className="w-fit flex flex-col gap-3 items-center">
+            {users.map((user) => (
+              <RequestCard key={user.id} user={user} />
+            ))}
+          </div>
+        ) : (
+          search.length > 0 && <p className="text-gray-500">No users found.</p>
+        )}
+      </div>
 
-      {users.length > 0 ? (
-        <div className="w-fit flex flex-col gap-3 items-center">
-          {users.map((user) => (
-            <RequestCard key={user.id} user={user} />
-          ))}
-        </div>
-      ) : (
-        <p className="text-gray-500">No users found.</p>
-      )}
-      {suggestions?.map((suggestion: Student) => (
-        <SuggestedFriends data={suggestion} key={suggestion.id} />
-      ))}
+      <div className="w-full text-center mt-10  ">
+        <h1 className="text-2xl font-bold mb-4 ">Suggested Connections</h1>
+
+        {suggestions?.map((suggestion: Student) => (
+          <SuggestedFriends data={suggestion} key={suggestion.id} />
+        ))}
+      </div>
     </div>
   );
 };

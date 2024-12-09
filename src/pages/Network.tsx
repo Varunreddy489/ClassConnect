@@ -5,13 +5,13 @@ import StudentsNetwork from "./StudentsNetwork";
 const Network = () => {
   return (
     <div className=" text-zinc-100 p-8">
-      <Tabs defaultValue="account" className="text-xl ">
+      <Tabs defaultValue="students" className="text-xl"> 
         <TabsList>
-          <TabsTrigger className="text-xl "  value="clubs">
+          <TabsTrigger className="text-xl" value="clubs">
             Clubs
           </TabsTrigger>
           <hr className="p-1" />
-          <TabsTrigger value="students" className="text-xl ">
+          <TabsTrigger value="students" className="text-xl">
             Students
           </TabsTrigger>
         </TabsList>
