@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { MoveLeft } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -36,19 +36,23 @@ const ResetPassword = () => {
   const { token } = useParams();
   const { toast } = useToast();
 
+  const navigate= useNavigate()
+
   const { mutate: resetPassword } = useMutation({
     mutationFn: async (data: ResetPassword) => {
       const response = await axiosInstance.post(
-        `/student/changePassword/${token}`,
+        `/auth/student/changePassword/${token}`,
         data
       );
-      return response.data;
       console.log(response.data);
+      return response.data;
     },
     onSuccess: (data) => {
       toast({
         title: data.message || "Success: Password recovery email sent!",
       });
+      navigate('/home')
+
     },
     onError: (err: any) => {
       toast({

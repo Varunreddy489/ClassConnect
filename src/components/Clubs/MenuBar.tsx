@@ -13,24 +13,15 @@ import {
   EllipsisVertical,
   Info,
   LogOut,
+  MessageSquareOff,
   Trash2,
   UsersRound,
 } from "lucide-react";
 import { UserClubsResponse } from "@/types/Client-types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Separator } from "../ui/separator";
-import { axiosInstance } from "@/lib/axios";
 
 const MenuBar = ({ clubData }: { clubData: UserClubsResponse }) => {
-  
-  const removeClubMember=async()=>{
-    try {
-      const response=await axiosInstance.delete(`/clubs`)
-    } catch (error) {
-      console.error("error in removeClubMember:",error);
-    }
-  }
-
   return (
     <div className="text-center  ">
       <DropdownMenu>
@@ -82,6 +73,7 @@ const MenuBar = ({ clubData }: { clubData: UserClubsResponse }) => {
                           <AvatarFallback>{clubData.name}</AvatarFallback>
                         </Avatar>
                         <span>{member.name}</span>
+                        <span>{member.email}</span>
                       </div>
                       <Button variant={"destructive"}>
                         <Trash2 />
@@ -92,11 +84,20 @@ const MenuBar = ({ clubData }: { clubData: UserClubsResponse }) => {
                   <DropdownMenuItem>No members found</DropdownMenuItem>
                 )}
               </DropdownMenuSubContent>
+              <Separator />
+
+              <DropdownMenuItem>
+                <button className="flex items-center space-x-2 hover:bg-gray-900 w-full ">
+                  <MessageSquareOff />
+
+                  <span>Clear Messages</span>
+                </button>
+              </DropdownMenuItem>
             </DropdownMenuSub>
 
             <Separator />
 
-            <DropdownMenuItem className="flex items-center space-x-2 hover:bg-gray-900 w-full">
+            <DropdownMenuItem className="flex items-center space-x-2 w-full">
               <LogOut />
               <span>Leave Club</span>
             </DropdownMenuItem>

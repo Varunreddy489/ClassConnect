@@ -1,21 +1,25 @@
 import { useState } from "react";
 import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import { axiosInstance } from "@/lib/axios";
-import { useNavigate } from "react-router-dom";
+import { useMessageStore } from "@/stores/useMessageStore";
 
 const Logout = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { disconnectSocket } = useMessageStore();
+
   const [error, setError] = useState<string | null>(null);
 
   const logout = async () => {
     setLoading(true);
-    setError(null); 
+    setError(null);
 
     try {
-      const response = await axiosInstance.post("/student/logout", {});
+      const response = await axiosInstance.post("/auth/student/logout", {});
       console.log(response.data);
+      disconnectSocket();
       navigate("/login");
     } catch (err) {
       setError("Logout failed");

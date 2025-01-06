@@ -2,8 +2,14 @@ export function extractTime(dateString: string) {
   const date = new Date(dateString);
   const hours = padZero(date.getHours());
   const minutes = padZero(date.getMinutes());
-  return `${hours}:${minutes}`;
+  // const day = padZero(date.getDate());
+  // const month = padZero(date.getMonth() + 1);
+  // const year = date.getFullYear();
+
+  return `${hours}:${minutes} `;
 }
+
+// - ${day}/${month}/${year}
 
 export function extractDate(dateString: string) {
   const date = new Date(dateString);

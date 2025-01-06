@@ -1,23 +1,38 @@
+import { useMessageStore } from "@/stores/useMessageStore";
 import { UserClubsResponse } from "@/types/Client-types";
+import { useEffect } from "react";
 
 const Conversation = ({ data }: { data: UserClubsResponse }) => {
+  const { selectedClub, setSelectedClub, socket } = useMessageStore();
+
+  const handleSelectClub = () => {
+    if (data.id) {
+      setSelectedClub(data.id);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedClub) {
+      console.log("Joining club:", selectedClub);
+      socket?.emit("join_club", selectedClub);
+    }
+  }, [selectedClub, socket]);
+
   return (
     <div
       className={`flex gap-2 items-center text-black dark:text-white hover:bg-sky-500 rounded p-2
-				 py-1 cursor-pointer mb-4 `}
+				 py-1 cursor-pointer mb-4`}
+      onClick={handleSelectClub}
     >
-      <div className={`avatar`}>
+      <div className="avatar">
         <div className="w-8 md:w-12 rounded-full">
-          {data.profilePic === null ? (
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/9/91/Element_Desktop_1.10.1_Linux_Yaru_%28cropped%29.png"
-              alt={`${data.name}`}
-            />
-          ) : (
+          {data.profilePic !== null ? (
             <img
               src={`http://localhost:5000/images/${data.profilePic}`}
               alt={`${data.name}`}
             />
+          ) : (
+            <img src="" alt="" />
           )}
         </div>
       </div>

@@ -51,7 +51,6 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
 
   setSelectedClub: (clubId: string) => set({ selectedClub: clubId }),
 
-  
   initSocket: (userId) => {
     if (!get().isConnected) {
       socket.auth = { userId };
@@ -115,6 +114,7 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
         clubData: response.data,
         messages: response.data.messages,
       });
+      
       return response.data;
     } catch (error) {
       set({ isLoading: false, error: error });

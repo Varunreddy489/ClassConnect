@@ -1,17 +1,17 @@
-// import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-// function useChatScroll(dep: any) {
-//   const ref = useRef<HTMLElement>();
+function useChatScroll(dep: any) {
+  const ref = useRef<HTMLElement>();
 
-//   useEffect(() => {
-//     setTimeout(() => {
-//       if (ref.current) {
-//         ref.current.scrollTop = ref.current.scrollHeight;
-//       }
-//     }, 100);
-//   }, [dep]);
+  useEffect(() => {
+    setTimeout(() => {
+      if (ref.current) {
+        ref.current.scrollTop = ref.current.scrollHeight;
+      }
+    }, 100);
+  }, [dep]);
 
-//   return ref;
-// }
+  return ref;
+}
 
-// export default useChatScroll;
+export default useChatScroll;

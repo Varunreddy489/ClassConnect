@@ -1,11 +1,11 @@
 import { UserPlus } from "lucide-react";
 
-import { Button } from "./ui/button";
 import { Student } from "@/types/Client-types";
 import { useConnectionStore } from "@/stores/useConnectionStore";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { toast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
 
 const SuggestedFriends = ({ data }: { data: Student }) => {
   const { sendConnection } = useConnectionStore();
@@ -22,7 +22,7 @@ const SuggestedFriends = ({ data }: { data: Student }) => {
     }
   };
   return (
-    <div className="w-full p-10 h-16 dark:bg-black bg-emerald-100 m-1 rounded-xl  flex justify-between items-center  ">
+    <div className="w-full p-10 h-16 dark:text-white text-black dark:bg-black bg-emerald-100 m-1 rounded-xl  flex justify-between items-center  ">
       <Avatar>
         <AvatarImage
           src={

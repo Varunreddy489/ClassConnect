@@ -1,58 +1,61 @@
-import Spinner from "@/components/Spinner";
-import { axiosInstance } from "@/lib/axios";
-import { MessageTypes, UserClubsResponse } from "@/types/Client-types";
-import { useQuery } from "@tanstack/react-query";
-import MessageSkeleton from "./MessageSkeleton";
 import Message from "./Message";
+import MessageSkeleton from "./MessageSkeleton";
+import { MessageTypes } from "@/types/Client-types";
+import { useMessageStore } from "@/stores/useMessageStore";
+import { Button } from "@/components/ui/button";
+import { MoveDown } from "lucide-react";
+import { useEffect, useRef } from "react";
 
-const Messages = ({ clubData }: { clubData: UserClubsResponse }) => {
-  const currentUserId = localStorage.getItem("num");
+const Messages = () => {
+  const { isLoading } = useMessageStore();
+  const { messages } = useMessageStore();
+  console.log(messages);
 
-  const fetchClubById = async () => {
-    try {
-      const response = await axiosInstance.get(`/club/message/${clubData.id}`);
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
-      console.error("error in Conversation:", error);
-      throw new Error("Failed to fetch club details");
+  const user = localStorage.getItem("user");
+
+  const userId = user ? JSON.parse(user).id : null;
+
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
     }
   };
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["club", clubData.id],
-    queryFn: fetchClubById,
-  });
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
-  if (isLoading) {
-    return <Spinner />;
-  }
-
-  if (error instanceof Error) {
-    return (
-      <div className="flex items-center justify-center">
-        Error: {error.message}
-      </div>
-    );
-  }
   return (
-    <div className="px-4 mt-1 overflow-auto" id="back">
-      {isLoading &&
-        [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}
+    <div  className="w-full h-fit bg-cover bg-no-repeat"
+    style={{ backgroundImage: "url('/chat_background.jpg')" }}>
+      <div
+        ref={messagesContainerRef}
+        className="relative px-4  overflow-y-auto h-[90vh]"
+      >
+        {isLoading &&
+          [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}
 
-      {data.messages.map((message: MessageTypes) => (
-        <Message
-          key={message.id}
-          message={message}
-          currentUserId={currentUserId || ""}
-        />
-      ))}
+        {messages.map((message: MessageTypes) => (
+          <Message
+            key={message.id}
+            message={message}
+            currentUserId={userId || ""}
+          />
+        ))}
 
-      {!isLoading && data.messages.length === 0 && (
-        <p className="flex justify-center items-center h-full text-white">
-          Send a message to start the conversation
-        </p>
-      )}
+        {!isLoading && messages.length === 0 && (
+          <p className="flex justify-center items-center h-full text-white">
+            Send a message to start the conversation
+          </p>
+        )}
+      </div>
+      <div className="fixed bottom-16 right-4 z-50">
+        <Button className="bg-red-950" onClick={scrollToBottom}>
+          <MoveDown />
+        </Button>
+      </div>
     </div>
   );
 };

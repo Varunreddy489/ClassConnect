@@ -1,6 +1,7 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { extractTime } from "@/lib/extractTime";
 import { MessageTypes } from "@/types/Client-types";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CheckCheck } from "lucide-react";
 
 const Message = ({
   message,
@@ -9,18 +10,21 @@ const Message = ({
   message: MessageTypes;
   currentUserId: string;
 }) => {
-  console.log(message.sender);
   const fromMe = message.sender.id == currentUserId;
-
   const img = message.sender.profilePic
     ? `http://localhost:5000/images/${message.sender.profilePic}`
     : "https://upload.wikimedia.org/wikipedia/commons/9/91/Element_Desktop_1.10.1_Linux_Yaru_%28cropped%29.png";
-
+  const isRead = true;
   const user = fromMe ? "hidden" : "text-white";
-  const textAlign = fromMe ? "text-right" : "text-left";
-  const bubbleBg = fromMe ? "bg-blue-500" : "bg-gray-500";
+  const checkColor = isRead ? "text-white" : "text-blue-400";
+  const textAlign = fromMe ? " text-left" : "text-right";
+  const bubbleBg = fromMe ? "bg-green-500" : "bg-gray-500";
   const messagePadding = fromMe ? "pl-4 pr-4" : "pr-4 pl-4";
   const chatAlignment = fromMe ? "justify-end" : "justify-start";
+  const isImage = message.fileType && message.fileType.startsWith("image");
+
+
+  console.log(message);
 
   return (
     <div className="mb-3">
@@ -31,20 +35,59 @@ const Message = ({
               <AvatarImage src={img} alt={message.sender.name} />
               <AvatarFallback>{message.sender.name}</AvatarFallback>
             </Avatar>
-            {/* <img
-             
-              alt=
-              className="rounded-full object-cover w-full h-full"
-            /> */}
           </div>
         )}
-
-        <div className={`max-w-xs md:max-w-md ${textAlign}`}>
-          <p
-            className={`text-sm text-left md:text-base text-white py-2  rounded-lg  ${bubbleBg} ${messagePadding}`}
+        <div>
+          <div
+            className={`max-w-xs flex place-items-end md:max-w-md ${textAlign} ${bubbleBg} rounded-md`}
           >
-            {message.body}
-          </p>
+            {message.body !== "" && (
+              <p
+                className={`text-sm text-left md:text-base text-white py-2  rounded-lg  ${messagePadding}`}
+              >
+                {message.body}
+              </p>
+            )}
+            <CheckCheck className="ml-2 text-blue-900" />
+          </div>
+
+          {message.fileType && (
+            <div className="mt-2">
+              {isImage ? (
+                <div className="flex">
+                  <CheckCheck className={`absolute bottom-2 right-2 text-blue-900 ${checkColor}`} />
+                  <img
+                    src={`http://localhost:5000/files/${message.fileUrl}`}
+                    alt="Image"
+                    className="  rounded-lg cursor-pointer max-w-[400px] h-auto"
+                    onClick={() =>
+                      window.open(
+                        `http://localhost:5000/files/${message.fileUrl}`,
+                        "_blank"
+                      )
+                    }
+                  />
+                </div>
+              ) : (
+                <div>
+                  <iframe
+                    src={`http://localhost:5000/files/${message.fileUrl}`}
+                    className="w-full h-96 rounded-lg border"
+                    title="PDF Preview"
+                  />
+                  <a
+                    href={`http://localhost:5000/files/${message.fileUrl}`}
+                    download
+                    target="_blank"
+                    className="text-blue-500 underline mt-2 block"
+                  >
+                    View Doc
+                  </a>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="mt-1 text-xs text-gray-400 flex items-center">
             <span className={`${user}`}>{message.sender.name}</span>
             <span className={`${user} mx-2 `}>•</span>

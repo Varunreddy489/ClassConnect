@@ -1,17 +1,18 @@
 import {
   FC,
   useState,
+  Dispatch,
   useEffect,
   ReactNode,
   useContext,
   createContext,
-  Dispatch,
   SetStateAction,
 } from "react";
 
 import { axiosInstance } from "@/lib/axios";
-import { AuthUserType } from "@/types/Client-types";
 import { useNavigate } from "react-router-dom";
+import { AuthUserType } from "@/types/Client-types";
+import { useMessageStore } from "@/stores/useMessageStore";
 
 const AuthContext = createContext<{
   authUser: AuthUserType | null;
@@ -27,6 +28,7 @@ export const useAuth = () => {
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { initSocket, disconnectSocket } = useMessageStore();
   const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
 
   const navigate = useNavigate();
@@ -35,12 +37,14 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const fetchUser = async () => {
       try {
         setIsLoading(true);
-        const res = await axiosInstance.get("/student/me");
+        const res = await axiosInstance.get("/auth/student/me");
+        const userId = res.data.isStudent.id;
         if (!res) {
           throw new Error("User not authenticated");
         }
-        localStorage.setItem("num", JSON.stringify(res.data.isStudent.id));
 
+        localStorage.setItem("user", JSON.stringify(res.data.isStudent));
+        initSocket(userId);
         setAuthUser(res.data);
       } catch (error: any) {
         if (error.response.data.error === "Unauthorized - Token has expired") {
@@ -49,6 +53,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
           setError(error);
           console.error("error in authContext:", error);
         }
+        disconnectSocket();
       } finally {
         setIsLoading(false);
       }

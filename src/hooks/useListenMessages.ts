@@ -1,26 +1,25 @@
-import { useEffect } from "react";
-import { useSocketContext } from "@/context/SocketContext";
-import useConversation from "@/zustand/useConversation";
+// import { useEffect } from "react";
+// import useConversation from "@/zustand/useConversation";
+// import { useSocket } from "@/context/SocketContext";
+// import { MessageTypes } from "@/types/Client-types";
 
-const useListenMessages = () => {
-  const { socket } = useSocketContext();
-  const { messages, setMessages } = useConversation();
+// const useListenMessages = () => {
+//   const socket = useSocket();
+//   const { setMessages } = useConversation();
 
-  useEffect(() => {
-    if (!socket) return;
+//   useEffect(() => {
+//     if (!socket) return;
 
-    socket.on("receiveMessage", (newMessage) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-    });
+//     const handleNewMessage = (newMessage: MessageTypes) => {
+//       setMessages((prevMessages) => [...prevMessages, newMessage]);
+//     };
 
-    // socket.on("receiveMessage", (newMessage) => {
-    //   setMessages([...messages, newMessage]);
-    // });
+//     socket.on("receiveMessage", handleNewMessage);
 
-    return () => {
-      socket.off("newMessage");
-    };
-  }, [socket, messages, setMessages]);
-};
+//     return () => {
+//       socket.off("receiveMessage", handleNewMessage);
+//     };
+//   }, [socket, setMessages]);
+// };
 
 export default useListenMessages;

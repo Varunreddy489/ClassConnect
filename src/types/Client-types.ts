@@ -77,6 +77,15 @@ export type StudentsResponse = {
   students: Student[];
 };
 
+export type EventTypes = {
+  title?: string;
+  description?: string;
+  startDate?: Date;
+  image?: File | null;
+  endDate?: Date;
+  location?: string;
+};
+
 export type UserClubsResponse = {
   id?: string;
   name?: string;

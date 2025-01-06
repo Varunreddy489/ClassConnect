@@ -1,10 +1,5 @@
 import { ChangeEvent, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Info, SquarePen, Trash2 } from "lucide-react";
 
 import {
@@ -16,15 +11,20 @@ import {
   TableHeader,
   TableCaption,
 } from "@/components/ui/table";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import Spinner from "@/components/Spinner";
 import { axiosInstance } from "@/lib/axios";
+import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import ClubDetails from "@/components/ClubDetails";
 import { Separator } from "@/components/ui/separator";
 import UpdateProfile from "@/components/UpdateProfile";
-import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
   const { authUser } = useAuth();
@@ -229,7 +229,7 @@ const Card = ({ data }: { data: any }) => {
   };
 
   const { mutate: updateClub } = useMutation({
-    mutationFn: async (picture:File) => {
+    mutationFn: async (picture: File) => {
       const formData = new FormData();
       formData.append("profile", picture);
 
@@ -257,11 +257,24 @@ const Card = ({ data }: { data: any }) => {
     onError: () => {
       toast({
         variant: "destructive",
-        title: "Success: Welcome to ClassConnect!",
-        description: "You have logged in successfully.",
+        title: "Error Updating Image",
+        description: "There was an error updating the image.",
       });
     },
   });
+
+
+  const handleUpdateImage = () => {
+    if (pic) {
+      updateClub(pic); // Pass the selected file to the mutate function
+    } else {
+      toast({
+        variant: "destructive",
+        title: "No file selected",
+        description: "Please select an image file first.",
+      });
+    }
+  };
 
   return (
     <div className="max-w-sm max-h-96 min-h-80 w-64 border rounded-lg shadow">
@@ -313,10 +326,11 @@ const Card = ({ data }: { data: any }) => {
             <Input
               onChange={handleFileChange}
               type="file"
+              accept="image/*"
               placeholder="Choose a pic"
             />
 
-            <Button onClick={updateClub} >update Image</Button>
+            <Button onClick={handleUpdateImage}>update Image</Button>
           </div>
         )}
       </div>

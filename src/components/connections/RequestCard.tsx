@@ -1,11 +1,16 @@
-import { Button } from "./ui/button";
-import { Student } from "@/types/Client-types";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Link } from "react-router-dom";
 import { UserPlus } from "lucide-react";
+
+import { Button } from "../ui/button";
+import { Student } from "@/types/Client-types";
+import { Avatar, AvatarImage } from "../ui/avatar";
 import { useConnectionStore } from "@/stores/useConnectionStore";
+
 
 const RequestCard = ({ user }: { user: Student }) => {
   const { sendConnection } = useConnectionStore();
+
+  console.log(user);
 
   const handleConnection = async () => {
     if (user.id) {
@@ -18,7 +23,7 @@ const RequestCard = ({ user }: { user: Student }) => {
   return (
     <div
       key={user.id}
-      className="flex z-10 justify-between w-[400px] h-16 items-center p-3 dark:bg-zinc-900 bg-400 shadow rounded-lg"
+      className="flex dark:text-white text-black z-10 justify-between w-[400px] h-16 items-center p-3 dark:bg-zinc-900 bg-400 shadow rounded-lg"
     >
       <div>
         <Avatar>
@@ -33,8 +38,10 @@ const RequestCard = ({ user }: { user: Student }) => {
         </Avatar>
       </div>
       <div className="ms-3 text-sm flex flex-col font-normal text-center space-x-2">
-        <span>{user.name}</span>
-        <span className="">{user.email}</span>
+        <Link to={`/profile/${user.studentId}`}>
+          <span className="text-blue-700" >{user.name}</span>
+        </Link>
+          <span className="">{user.email}</span>
       </div>
 
       <Button onClick={handleConnection} className="flex" variant={"ghost"}>

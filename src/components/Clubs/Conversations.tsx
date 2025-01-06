@@ -1,46 +1,35 @@
-import { axiosInstance } from "@/lib/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 import Spinner from "../Spinner";
 import SearchBar from "../SearchBar";
 import Conversation from "./Conversation";
-import { UserClubsResponse } from "@/types/Client-types";
+import { useMessageStore } from "@/stores/useMessageStore";
 
-const Conversations = ({ setSelectedClub }: { setSelectedClub: any }) => {
-  const fetchUserClubs = async () => {
-    try {
-      const response = await axiosInstance.get("/user/club");
-      // console.log(response.data.clubs);
-      return response.data.clubs;
-    } catch (error) {
-      console.error("error in UserClubs: ", error);
-    }
-  };
+const Conversations = () => {
+  const { userClubs, isLoading, error, fetchUserClubs } = useMessageStore();
 
-  const { data, isLoading, error } = useQuery({
-    queryFn: fetchUserClubs,
-    queryKey: ["userClubs"],
-  });
+  useEffect(() => {
+    fetchUserClubs();
+  }, [fetchUserClubs]);
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  if (isLoading) return <Spinner />;
+  if (error) return <div>Error: {error.message}</div>;
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center">
-        Error: {error.message}
-      </div>
-    );
-  }
   return (
-    <div className="text-black  h-screen overflow-y-auto dark:text-white">
+    <div className="text-black h-screen overflow-y-auto dark:text-white">
       <SearchBar />
-      {data.map((club: UserClubsResponse) => (
-        <div key={club.id} onClick={() => setSelectedClub(club)}>
-          <Conversation data={club} />
-        </div>
-      ))}
+      {userClubs ? (
+        <>
+          {userClubs.clubs?.length > 0 &&
+            userClubs.clubs.map((club) => (
+              <div key={club.id}>
+                <Conversation data={club} />
+              </div>
+            ))}
+        </>
+      ) : (
+        <div>No data found.</div>
+      )}
     </div>
   );
 };

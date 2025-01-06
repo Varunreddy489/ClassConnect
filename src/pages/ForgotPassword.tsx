@@ -30,7 +30,7 @@ const ForgotPassword = () => {
 
   const { mutate: forgotPassword } = useMutation({
     mutationFn: async (data: ForgotPassword) => {
-      const res = await axiosInstance.post("/student/forgotPassword", data);
+      const res = await axiosInstance.post("/auth/student/forgotPassword", data);
       return res.data;
       console.log(res.data);
     },

@@ -1,11 +1,11 @@
 // import axios from "axios";
 import { MoveRight } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 
 import Navbar from "@/components/Navbar";
-import { ClubTypes } from "@/types/Client-types";
-import { axiosInstance } from "@/lib/axios";
-import ClubCard from "@/components/Clubs/ClubCard";
+// import { ClubTypes } from "@/types/Client-types";
+// import { axiosInstance } from "@/lib/axios";
+// import ClubCard from "@/components/Clubs/ClubCard";
 import { Button } from "@/components/ui/button";
 import FeaturesCard from "@/components/FeaturesCard";
 import { Link } from "react-router-dom";
@@ -76,33 +76,33 @@ const features = [
 ];
 
 const LandingPage = () => {
-  const fetchClubs = async () => {
-    try {
-      const response = await axiosInstance.get("/club", {
-        withCredentials: true,
-      });
-      console.log(response);
-      return response.data;
-    } catch (error) {
-      console.error("error in fetchClubs:", error);
-    }
-  };
+  // const fetchClubs = async () => {
+  //   try {
+  //     const response = await axiosInstance.get("/club", {
+  //       withCredentials: true,
+  //     });
+  //     console.log(response);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("error in fetchClubs:", error);
+  //   }
+  // };
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["clubs"],
-    queryFn: fetchClubs,
-  });
+  // const { data, isLoading, error } = useQuery({
+  //   queryKey: ["clubs"],
+  //   queryFn: fetchClubs,
+  // });
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  if (error) {
-    return <div>Error loading clubs: {error.message}</div>;
-  }
+  // if (error) {
+  //   return <div>Error loading clubs: {error.message}</div>;
+  // }
 
   return (
-    <div className=" px-4  ">
+    <div >
       <Navbar />
       <br />
       {/* Banner Image */}
@@ -154,7 +154,7 @@ const LandingPage = () => {
 
       {/* Clubs */}
 
-      <div className="mt-10">
+      {/* <div className="mt-10">
         <h1 className="text-5xl font-bold italic text-center">Clubs</h1>
 
         <div className="flex flex-wrap justify-center space-y-4">
@@ -167,7 +167,7 @@ const LandingPage = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

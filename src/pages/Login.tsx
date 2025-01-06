@@ -42,7 +42,7 @@ const Login = () => {
 
   const { mutate: login } = useMutation({
     mutationFn: async (data: StudentLoginTypes) => {
-      const res = await axiosInstance.post("/student/login", data);
+      const res = await axiosInstance.post("/auth/student/login", data);
       return res.data;
     },
     onSuccess: () => {
@@ -55,18 +55,14 @@ const Login = () => {
     },
     onError: (err: any) => {
       toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description:
-          err?.response?.data.error || "There was a problem with your request.",
+        title: "Success: Welcome to ClassConnect!",
+        description: "You have logged in successfully.",
       });
-
       console.error("Login error:", err);
     },
   });
 
   const onSubmit = async (data: StudentLoginTypes) => {
-    // Call the mutate function to perform the login
     await login(data);
   };
 
@@ -84,7 +80,6 @@ const Login = () => {
         </p>
 
         <div className="mt-8 space-y-6">
-          {/* Email Address */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Email Address
@@ -93,7 +88,6 @@ const Login = () => {
               {...loginField("email", { required: true })} // Using renamed register
               placeholder="johndoe@example.com"
               type="email"
-              // value={"varunsannapureddy@gmail.com"}
               className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-100 focus:outline-none"
             />
             {errors.email && (
@@ -101,26 +95,22 @@ const Login = () => {
             )}
           </div>
 
-          {/* Password */}
           <div className="dark:text-white text-black ">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Password
               </label>
               <div className="relative">
-                {" "}
-                {/* Step 3: Wrap input and icons in a relative div */}
+              
                 <input
                   {...loginField("password", { required: true })}
                   placeholder="••••••••"
-                  // value={"12345678"}
-                  type={isPasswordVisible ? "text" : "password"} // Change type based on visibility
+                  type={isPasswordVisible ? "text" : "password"} 
                   className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm dark:bg-gray-700 dark:text-gray-100 focus:outline-none"
                 />
                 {errors.password && (
                   <div className="text-red-600">{errors.password.message}</div>
                 )}
-                {/* Step 4: Add icons and attach the toggle function to the onClick event */}
                 <button
                   type="button"
                   onClick={togglePasswordVisibility}
@@ -131,7 +121,6 @@ const Login = () => {
                   ) : (
                     <Eye className="dark:text-white text-black " />
                   )}{" "}
-                  {/* Show/hide based on visibility state */}
                 </button>
               </div>
             </div>

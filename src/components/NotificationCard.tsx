@@ -12,7 +12,6 @@ import { axiosInstance } from "@/lib/axios";
 import { useNotificationStore } from "@/stores/useNotificationStore";
 
 const NotificationCard = ({ data }: { data: any }) => {
-  console.log(data.connectionId);
   const clubId = data.clubId;
   const requestId = data.joinRequestId;
 

@@ -16,6 +16,8 @@ import logo from "/logo-no-background.svg";
 import { ModeToggle } from "./ui/mode-toggle";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
+import { useStatsStore } from "@/stores/useStatsStore";
+import { useEffect } from "react";
 
 const Sidebar = ({
   isCollapsed,
@@ -24,6 +26,12 @@ const Sidebar = ({
   isCollapsed: boolean;
   toggleSidebar: () => void;
 }) => {
+  const { fetchStats, stats } = useStatsStore();
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
+
   return (
     <div
       className={`flex flex-col h-screen top-0 fixed left-0 bg-gray-50 dark:bg-[#000000] text-gray-950 dark:text-gray-100 transition-all duration-300 ${
@@ -105,11 +113,11 @@ const Sidebar = ({
                 Notifications
               </span>
               <span
-                className={`px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-500 bg-red-50 rounded-full ${
+                className={`px-2 py-0.5 ml-auto text-xs font-medium tracking-wide ${
                   isCollapsed ? "hidden" : "block"
-                }`}
+                } ${stats.unreadNotificationsCount > 0 && "text-red-500 bg-white rounded-full "}`}
               >
-                1.2k
+                {stats.unreadNotificationsCount > 0 && stats.unreadNotificationsCount}
               </span>
             </Link>
           </li>
